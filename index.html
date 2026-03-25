@@ -73,7 +73,7 @@ h1 {
   color: #ff4d6d;
 }
 
-/* TEXTO PREMIUM CENTRADO */
+/* TEXTO CENTRADO */
 .mensaje {
   font-size: 15px;
   line-height: 1.8;
@@ -138,7 +138,7 @@ button {
 <div class="envelope" onclick="abrir()"></div>
 
 <div class="card" id="card">
-  <h1>Feliz cumpleaños 🎂</h1>
+  <h1>HAPPY BIRTHDAY 🎂</h1>
 
   <div id="mensaje" class="mensaje"></div>
 
@@ -154,12 +154,12 @@ button {
 const nombre = "Carmen";
 
 const texto = [
-  "Hoy cierras un capítulo más y comienzas uno nuevo en tu vida.",
-  "No importa la cantidad de años que cumplas, sino la calidad con la que vives.",
-  "No apresures el tiempo, disfruta cada momento.",
-  "Feliz vuelta al sol 🌞",
-  "Hoy celebras tus 18 años 🎂",
-  "Te mando un fuerte abrazo a la distancia 💛"
+  "No puedo explicar cuánto te aprecio. Aunque no es mucho el tiempo de conocerte, ya se te quiere mucho.",
+  "Eres una chica increíble, demasiado linda, que en poco tiempo se convirtió en alguien muy especial para mí y para todos los que te rodean. Has demostrado que hay personas que llegan para traer cambios positivos y llenar la vida de alegría.",
+  "Hoy cierras un capítulo y comienzas otro lleno de nuevas oportunidades.",
+  "Que este cumpleaños sea el inicio de un año donde descubras más felicidad, recibas abundantes bendiciones y vivas tus sueños con pasión y entusiasmo.",
+  "Gracias por existir y por compartir tu luz con quienes te rodean.",
+  "Disfruta tu día al máximo, porque te lo mereces más que nadie. Te mando un fuerte abrazo a la distancia 💛"
 ];
 
 // ACTIVAR AUDIO
@@ -183,7 +183,7 @@ function abrir() {
   if (navigator.vibrate) navigator.vibrate(200);
 }
 
-// TEXTO ANIMADO PREMIUM
+// TEXTO ANIMADO
 function escribir() {
   const cont = document.getElementById("mensaje");
   cont.innerHTML = "";
@@ -216,7 +216,7 @@ function escribir() {
   escribirParrafo();
 }
 
-// LLUVIA CONSTANTE 💖🎂
+// LLUVIA 💖🎂
 let lluviaActiva = false;
 
 function corazones() {
@@ -239,7 +239,7 @@ function corazones() {
 
 // MENSAJE SECRETO
 function secreto() {
-  alert("Eres una persona muy especial 💛 nunca cambies");
+  alert("Que nunca muera tu forma tan linda de ver la vida. Que siempre brilles más que el sol y que nunca se apague esa sonrisa. Nunca cambies 💛");
 }
 </script>
 
