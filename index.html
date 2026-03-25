@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -41,8 +40,6 @@ body {
   content: "";
   position: absolute;
   top: 0;
-  width: 0;
-  height: 0;
   border-left: 110px solid transparent;
   border-right: 110px solid transparent;
   border-top: 70px solid #ff4d6d;
@@ -76,9 +73,26 @@ h1 {
   color: #ff4d6d;
 }
 
-p {
-  font-size: 14px;
-  line-height: 1.5;
+/* TEXTO PREMIUM */
+.mensaje {
+  font-size: 15px;
+  line-height: 1.8;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.mensaje p {
+  margin-bottom: 14px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: aparecer 0.6s ease forwards;
+}
+
+@keyframes aparecer {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* BOTONES */
@@ -90,6 +104,7 @@ button {
   color: white;
   border-radius: 10px;
   width: 100%;
+  cursor: pointer;
 }
 
 /* CORAZONES */
@@ -116,9 +131,9 @@ button {
 <div class="envelope" onclick="abrir()"></div>
 
 <div class="card" id="card">
-  <h1>Feliz cumpleaños🎂</h1>
+  <h1>Feliz cumpleaños 🎂</h1>
 
-  <p id="mensaje"></p>
+  <div id="mensaje" class="mensaje"></div>
 
   <button onclick="corazones()">💖 Presiona aquí</button>
   <button onclick="secreto()">👀 Mensaje secreto</button>
@@ -129,18 +144,16 @@ button {
 <script>
 const nombre = "Carmen";
 
-const texto = `Hoy cierras un capítulo más y comienzas uno nuevo en tu vida.
+const texto = [
+  "Hoy cierras un capítulo más y comienzas uno nuevo en tu vida.",
+  "No importa la cantidad de años que cumplas, sino la calidad con la que vives.",
+  "No apresures el tiempo, disfruta cada momento.",
+  "Feliz vuelta al sol 🌞",
+  "Hoy celebras tus 18 años 🎂",
+  "Te mando un fuerte abrazo a la distancia 💛"
+];
 
-No importa la cantidad de años que cumplas, sino la calidad con la que vives.
-
-No apresures el tiempo, disfruta cada momento.
-
-Feliz vuelta al sol 🌞
-
-Hoy celebras tus 18 años 🎂
-
-Te mando un fuerte abrazo a la distancia 💛`;
-
+// ABRIR CARTA
 function abrir() {
   document.querySelector(".envelope").classList.add("open");
   document.getElementById("card").classList.add("show");
@@ -148,26 +161,45 @@ function abrir() {
   escribir();
 
   let audio = document.getElementById("music");
-  audio.play();
+  audio.play().catch(()=>{});
 
   if (navigator.vibrate) navigator.vibrate(200);
 }
 
+// TEXTO PREMIUM ANIMADO
 function escribir() {
-  let i = 0;
-  let speed = 30;
-  let cont = document.getElementById("mensaje");
+  const cont = document.getElementById("mensaje");
+  cont.innerHTML = "";
 
-  function write() {
+  let i = 0;
+
+  function escribirParrafo() {
     if (i < texto.length) {
-      cont.innerHTML += texto.charAt(i);
-      i++;
-      setTimeout(write, speed);
+      let p = document.createElement("p");
+      cont.appendChild(p);
+
+      let textoActual = texto[i];
+      let j = 0;
+
+      function escribirLetra() {
+        if (j < textoActual.length) {
+          p.innerHTML += textoActual.charAt(j);
+          j++;
+          setTimeout(escribirLetra, 25);
+        } else {
+          i++;
+          setTimeout(escribirParrafo, 400);
+        }
+      }
+
+      escribirLetra();
     }
   }
-  write();
+
+  escribirParrafo();
 }
 
+// CORAZONES
 function corazones() {
   for (let i = 0; i < 20; i++) {
     let heart = document.createElement("div");
@@ -180,8 +212,9 @@ function corazones() {
   }
 }
 
+// MENSAJE SECRETO
 function secreto() {
-  alert("Eres una persona muy especial 💛 nunca olvides eso");
+  alert("Eres una persona muy especial 💛 nunca cambies");
 }
 </script>
 
