@@ -14,8 +14,6 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-
-  /* ☁️ FONDO CIELO PRO */
   background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
 }
 
@@ -26,7 +24,6 @@ body {
   border-radius: 50px;
   opacity: 0.6;
 }
-
 .cloud::before,
 .cloud::after {
   content: "";
@@ -34,7 +31,6 @@ body {
   background: white;
   border-radius: 50%;
 }
-
 .cloud1 {
   width: 120px;
   height: 60px;
@@ -54,7 +50,6 @@ body {
   top: -20px;
   right: 10px;
 }
-
 .cloud2 {
   width: 150px;
   height: 70px;
@@ -74,13 +69,11 @@ body {
   top: -25px;
   right: 20px;
 }
-
 @keyframes moveClouds {
-  from { transform: translateX(0); }
   to { transform: translateX(120vw); }
 }
 
-/* TEXTO INICIAL */
+/* TEXTO */
 .hint {
   position: absolute;
   top: 20px;
@@ -99,18 +92,15 @@ body {
   cursor: pointer;
   z-index: 2;
 }
-
 .envelope:before {
   content: "";
   position: absolute;
-  top: 0;
   border-left: 110px solid transparent;
   border-right: 110px solid transparent;
-  border-top: 70px solid #4da6ff; /* azul */
+  border-top: 70px solid #4da6ff;
   transform-origin: top;
   transition: 0.6s;
 }
-
 .open:before {
   transform: rotateX(180deg);
 }
@@ -124,34 +114,26 @@ body {
   background: white;
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   transform: scale(0);
   transition: 0.4s;
   z-index: 2;
 }
-
 .card.show {
   transform: scale(1);
 }
 
-/* CONTENIDO SCROLL */
+/* CONTENIDO */
 .contenido {
   overflow-y: auto;
   flex: 1;
-  padding-right: 5px;
 }
-
-/* TEXTO */
-.mensaje {
-  font-size: 15px;
-  line-height: 1.8;
-}
-
 .mensaje p {
   text-align: justify;
   margin-bottom: 16px;
+  font-size: 15px;
+  line-height: 1.8;
 }
 
 /* BOTONES */
@@ -159,11 +141,10 @@ button {
   margin-top: 8px;
   padding: 10px;
   border: none;
-  background: #4da6ff; /* azul */
+  background: #4da6ff;
   color: white;
   border-radius: 10px;
   width: 100%;
-  cursor: pointer;
 }
 
 h1 {
@@ -171,16 +152,17 @@ h1 {
   color: #4da6ff;
 }
 
-/* LLUVIA */
+/* LLUVIA ENCIMA */
 .heart {
   position: fixed;
   bottom: -30px;
   animation: subir 4s linear forwards;
   pointer-events: none;
+  z-index: 9999; /* 👈 AHORA ENCIMA */
 }
 
 @keyframes subir {
-  100% {
+  to {
     transform: translateY(-110vh);
     opacity: 0;
   }
@@ -190,7 +172,6 @@ h1 {
 
 <body onclick="activarAudio()">
 
-<!-- ☁️ NUBES -->
 <div class="cloud cloud1"></div>
 <div class="cloud cloud2"></div>
 
@@ -205,10 +186,8 @@ h1 {
     <div id="mensaje" class="mensaje"></div>
   </div>
 
-  <div class="botones">
-    <button onclick="corazones()">💖 Presiona aquí</button>
-    <button onclick="secreto()">👀 Mensaje secreto</button>
-  </div>
+  <button onclick="corazones()">💖 Presiona aquí</button>
+  <button onclick="secreto()">👀 Mensaje secreto</button>
 </div>
 
 <audio id="music" preload="auto">
@@ -217,36 +196,24 @@ h1 {
 
 <script>
 const texto = [
-  "No puedo explicar cuánto te aprecio. Aunque no es mucho el tiempo de conocerte, déjame decirte que ya se te quiere mucho.",
-  "Eres una chica increíble y, por supuesto, demasiado linda. En poco tiempo te has convertido en alguien muy especial para mí y para todos los que te rodean.",
-  "Has demostrado que hay personas que llegan para traer cambios positivos y llenar la vida de alegría.",
-  "Hoy cierras un capítulo y comienzas otro lleno de nuevas oportunidades.",
-  "Que este cumpleaños sea el inicio de un año donde descubras más felicidad, recibas abundantes bendiciones y vivas tus sueños con pasión y entusiasmo. ✨",
-  "Gracias por existir y por compartir tu luz con quienes te rodean. 🫶",
-  "Disfruta tu día al máximo, porque te lo mereces más que nadie. Te mando un fuerte abrazo a la distancia 🤗🫶"
+  "No puedo explicar cuánto te aprecio. Aunque no es mucho el tiempo de conocerte, déjame decirte que ya se te quiere mucho. 🫶",
+  "Eres una chica increíble y, por supuesto, demasiado linda. En poco tiempo te has convertido en alguien muy especial para mí y para todos los que te rodean. 🌟",
+  "Has demostrado que hay personas que llegan para traer cambios positivos y llenar la vida de alegría. ✨",
+  "Hoy cierras un capítulo y comienzas otro lleno de nuevas oportunidades. 📖",
+  "Que este cumpleaños sea el inicio de un año donde descubras más felicidad, recibas abundantes bendiciones y vivas tus sueños con pasión y entusiasmo. 🎂",
+  "Gracias por existir y por compartir tu luz con quienes te rodean. 💫",
+  "Disfruta tu día al máximo, porque te lo mereces más que nadie. Te mando un fuerte abrazo a la distancia. 🤗🫶💖"
 ];
 
-// AUDIO
 function activarAudio() {
-  let audio = document.getElementById("music");
-  audio.play().catch(()=>{});
+  document.getElementById("music").play().catch(()=>{});
 }
 
-// ABRIR
 function abrir() {
   document.querySelector(".envelope").classList.add("open");
   document.getElementById("card").classList.add("show");
 
-  escribir();
-
-  let audio = document.getElementById("music");
-  audio.currentTime = 0;
-  audio.play().catch(()=>{});
-}
-
-// TEXTO
-function escribir() {
-  const cont = document.getElementById("mensaje");
+  let cont = document.getElementById("mensaje");
   cont.innerHTML = "";
 
   texto.forEach(t => {
@@ -254,9 +221,12 @@ function escribir() {
     p.textContent = t;
     cont.appendChild(p);
   });
+
+  let audio = document.getElementById("music");
+  audio.currentTime = 0;
+  audio.play().catch(()=>{});
 }
 
-// LLUVIA
 let lluviaActiva = false;
 function corazones() {
   if (lluviaActiva) return;
@@ -272,7 +242,6 @@ function corazones() {
   }, 250);
 }
 
-// SECRETO
 function secreto() {
   alert("Eres una persona muy especial, nunca cambies ❤️");
 }
