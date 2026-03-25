@@ -24,6 +24,7 @@ body {
   border-radius: 50px;
   opacity: 0.6;
 }
+
 .cloud::before,
 .cloud::after {
   content: "";
@@ -31,11 +32,13 @@ body {
   background: white;
   border-radius: 50%;
 }
+
+/* NUBE 1 */
 .cloud1 {
   width: 120px;
   height: 60px;
   top: 20%;
-  left: -150px;
+  left: 10%; /* 👈 visible desde inicio */
   animation: moveClouds 40s linear infinite;
 }
 .cloud1::before {
@@ -50,11 +53,13 @@ body {
   top: -20px;
   right: 10px;
 }
+
+/* NUBE 2 */
 .cloud2 {
   width: 150px;
   height: 70px;
   top: 60%;
-  left: -200px;
+  left: 50%; /* 👈 visible desde inicio */
   animation: moveClouds 55s linear infinite;
 }
 .cloud2::before {
@@ -69,8 +74,32 @@ body {
   top: -25px;
   right: 20px;
 }
+
+/* NUBE EXTRA (PRO) */
+.cloud3 {
+  width: 100px;
+  height: 50px;
+  top: 35%;
+  left: 80%;
+  animation: moveClouds 50s linear infinite;
+}
+.cloud3::before {
+  width: 60px;
+  height: 60px;
+  top: -20px;
+  left: 10px;
+}
+.cloud3::after {
+  width: 70px;
+  height: 70px;
+  top: -15px;
+  right: 10px;
+}
+
+/* MOVIMIENTO */
 @keyframes moveClouds {
-  to { transform: translateX(120vw); }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(120vw); }
 }
 
 /* TEXTO */
@@ -152,13 +181,13 @@ h1 {
   color: #4da6ff;
 }
 
-/* LLUVIA ENCIMA */
+/* LLUVIA */
 .heart {
   position: fixed;
   bottom: -30px;
   animation: subir 4s linear forwards;
   pointer-events: none;
-  z-index: 9999; /* 👈 AHORA ENCIMA */
+  z-index: 9999;
 }
 
 @keyframes subir {
@@ -172,8 +201,10 @@ h1 {
 
 <body onclick="activarAudio()">
 
+<!-- ☁️ NUBES -->
 <div class="cloud cloud1"></div>
 <div class="cloud cloud2"></div>
+<div class="cloud cloud3"></div>
 
 <div class="hint">Toca el sobre 💌</div>
 
