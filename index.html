@@ -9,12 +9,75 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  /* ☁️ FONDO CIELO PRO */
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+}
+
+/* ☁️ NUBES */
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50px;
+  opacity: 0.6;
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+
+.cloud1 {
+  width: 120px;
+  height: 60px;
+  top: 20%;
+  left: -150px;
+  animation: moveClouds 40s linear infinite;
+}
+.cloud1::before {
+  width: 70px;
+  height: 70px;
+  top: -30px;
+  left: 10px;
+}
+.cloud1::after {
+  width: 80px;
+  height: 80px;
+  top: -20px;
+  right: 10px;
+}
+
+.cloud2 {
+  width: 150px;
+  height: 70px;
+  top: 60%;
+  left: -200px;
+  animation: moveClouds 55s linear infinite;
+}
+.cloud2::before {
+  width: 80px;
+  height: 80px;
+  top: -30px;
+  left: 20px;
+}
+.cloud2::after {
+  width: 90px;
+  height: 90px;
+  top: -25px;
+  right: 20px;
+}
+
+@keyframes moveClouds {
+  from { transform: translateX(0); }
+  to { transform: translateX(120vw); }
 }
 
 /* TEXTO INICIAL */
@@ -23,7 +86,7 @@ body {
   top: 20px;
   color: white;
   font-size: 14px;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 /* SOBRE */
@@ -34,6 +97,7 @@ body {
   position: relative;
   border-radius: 8px;
   cursor: pointer;
+  z-index: 2;
 }
 
 .envelope:before {
@@ -42,7 +106,7 @@ body {
   top: 0;
   border-left: 110px solid transparent;
   border-right: 110px solid transparent;
-  border-top: 70px solid #ff4d6d;
+  border-top: 70px solid #4da6ff; /* azul */
   transform-origin: top;
   transition: 0.6s;
 }
@@ -56,7 +120,7 @@ body {
   position: absolute;
   width: 90%;
   max-width: 350px;
-  max-height: 80vh; /* 👈 CLAVE */
+  max-height: 80vh;
   background: white;
   border-radius: 20px;
   padding: 20px;
@@ -65,6 +129,7 @@ body {
   flex-direction: column;
   transform: scale(0);
   transition: 0.4s;
+  z-index: 2;
 }
 
 .card.show {
@@ -73,7 +138,7 @@ body {
 
 /* CONTENIDO SCROLL */
 .contenido {
-  overflow-y: auto; /* 👈 SCROLL */
+  overflow-y: auto;
   flex: 1;
   padding-right: 5px;
 }
@@ -85,13 +150,8 @@ body {
 }
 
 .mensaje p {
-  text-align: justify; /* 👈 JUSTIFICADO */
+  text-align: justify;
   margin-bottom: 16px;
-}
-
-/* BOTONES FIJOS */
-.botones {
-  margin-top: 10px;
 }
 
 /* BOTONES */
@@ -99,7 +159,7 @@ button {
   margin-top: 8px;
   padding: 10px;
   border: none;
-  background: #ff4d6d;
+  background: #4da6ff; /* azul */
   color: white;
   border-radius: 10px;
   width: 100%;
@@ -108,7 +168,7 @@ button {
 
 h1 {
   text-align: center;
-  color: #ff4d6d;
+  color: #4da6ff;
 }
 
 /* LLUVIA */
@@ -129,6 +189,10 @@ h1 {
 </head>
 
 <body onclick="activarAudio()">
+
+<!-- ☁️ NUBES -->
+<div class="cloud cloud1"></div>
+<div class="cloud cloud2"></div>
 
 <div class="hint">Toca el sobre 💌</div>
 
@@ -153,12 +217,12 @@ h1 {
 
 <script>
 const texto = [
-  "No puedo explicar cuánto te aprecio. Aunque no es mucho el tiempo de conocerte, dejame decirte que ya se te quiere mucho.",
-  "Eres una chica increíble y por supuesto demasiado linda, en poco tiempo te haz convirtido en alguien muy especial para mí y para todos los que te rodean.",
+  "No puedo explicar cuánto te aprecio. Aunque no es mucho el tiempo de conocerte, déjame decirte que ya se te quiere mucho.",
+  "Eres una chica increíble y, por supuesto, demasiado linda. En poco tiempo te has convertido en alguien muy especial para mí y para todos los que te rodean.",
   "Has demostrado que hay personas que llegan para traer cambios positivos y llenar la vida de alegría.",
   "Hoy cierras un capítulo y comienzas otro lleno de nuevas oportunidades.",
-  "Que este cumpleaños sea el inicio de un año donde descubras más felicidad, recibas abundantes bendiciones y vivas tus sueños con pasión y entusiasmo.✨",
-  "Gracias por existir y por compartir tu luz con quienes te rodean.🫶 ",
+  "Que este cumpleaños sea el inicio de un año donde descubras más felicidad, recibas abundantes bendiciones y vivas tus sueños con pasión y entusiasmo. ✨",
+  "Gracias por existir y por compartir tu luz con quienes te rodean. 🫶",
   "Disfruta tu día al máximo, porque te lo mereces más que nadie. Te mando un fuerte abrazo a la distancia 🤗🫶"
 ];
 
