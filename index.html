@@ -54,53 +54,49 @@ body {
 /* CARTA */
 .card {
   position: absolute;
-  width: 85%;
+  width: 90%;
   max-width: 350px;
+  max-height: 80vh; /* 👈 CLAVE */
   background: white;
   border-radius: 20px;
   padding: 20px;
-  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
   transform: scale(0);
   transition: 0.4s;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .card.show {
   transform: scale(1);
 }
 
-h1 {
-  color: #ff4d6d;
+/* CONTENIDO SCROLL */
+.contenido {
+  overflow-y: auto; /* 👈 SCROLL */
+  flex: 1;
+  padding-right: 5px;
 }
 
-/* TEXTO CENTRADO */
+/* TEXTO */
 .mensaje {
   font-size: 15px;
   line-height: 1.8;
-  width: 100%;
 }
 
 .mensaje p {
-  text-align: center;
-  margin: 0 auto 16px auto;
-  max-width: 85%;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: aparecer 0.6s ease forwards;
+  text-align: justify; /* 👈 JUSTIFICADO */
+  margin-bottom: 16px;
 }
 
-@keyframes aparecer {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* BOTONES FIJOS */
+.botones {
+  margin-top: 10px;
 }
 
 /* BOTONES */
 button {
-  margin-top: 10px;
+  margin-top: 8px;
   padding: 10px;
   border: none;
   background: #ff4d6d;
@@ -108,6 +104,11 @@ button {
   border-radius: 10px;
   width: 100%;
   cursor: pointer;
+}
+
+h1 {
+  text-align: center;
+  color: #ff4d6d;
 }
 
 /* LLUVIA */
@@ -119,10 +120,6 @@ button {
 }
 
 @keyframes subir {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
   100% {
     transform: translateY(-110vh);
     opacity: 0;
@@ -140,10 +137,14 @@ button {
 <div class="card" id="card">
   <h1>HAPPY BIRTHDAY 🎂</h1>
 
-  <div id="mensaje" class="mensaje"></div>
+  <div class="contenido">
+    <div id="mensaje" class="mensaje"></div>
+  </div>
 
-  <button onclick="corazones()">💖 Presiona aquí</button>
-  <button onclick="secreto()">👀 Mensaje secreto</button>
+  <div class="botones">
+    <button onclick="corazones()">💖 Presiona aquí</button>
+    <button onclick="secreto()">👀 Mensaje secreto</button>
+  </div>
 </div>
 
 <audio id="music" preload="auto">
@@ -151,24 +152,23 @@ button {
 </audio>
 
 <script>
-const nombre = "Carmen";
-
 const texto = [
   "No puedo explicar cuánto te aprecio. Aunque no es mucho el tiempo de conocerte, ya se te quiere mucho.",
-  "Eres una chica increíble, demasiado linda, que en poco tiempo se convirtió en alguien muy especial para mí y para todos los que te rodean. Has demostrado que hay personas que llegan para traer cambios positivos y llenar la vida de alegría.",
+  "Eres una chica increíble, demasiado linda, que en poco tiempo se convirtió en alguien muy especial para mí y para todos los que te rodean.",
+  "Has demostrado que hay personas que llegan para traer cambios positivos y llenar la vida de alegría.",
   "Hoy cierras un capítulo y comienzas otro lleno de nuevas oportunidades.",
   "Que este cumpleaños sea el inicio de un año donde descubras más felicidad, recibas abundantes bendiciones y vivas tus sueños con pasión y entusiasmo.",
   "Gracias por existir y por compartir tu luz con quienes te rodean.",
   "Disfruta tu día al máximo, porque te lo mereces más que nadie. Te mando un fuerte abrazo a la distancia 💛"
 ];
 
-// ACTIVAR AUDIO
+// AUDIO
 function activarAudio() {
   let audio = document.getElementById("music");
   audio.play().catch(()=>{});
 }
 
-// ABRIR CARTA
+// ABRIR
 function abrir() {
   document.querySelector(".envelope").classList.add("open");
   document.getElementById("card").classList.add("show");
@@ -177,69 +177,40 @@ function abrir() {
 
   let audio = document.getElementById("music");
   audio.currentTime = 0;
-  audio.volume = 0.8;
   audio.play().catch(()=>{});
-
-  if (navigator.vibrate) navigator.vibrate(200);
 }
 
-// TEXTO ANIMADO
+// TEXTO
 function escribir() {
   const cont = document.getElementById("mensaje");
   cont.innerHTML = "";
 
-  let i = 0;
-
-  function escribirParrafo() {
-    if (i < texto.length) {
-      let p = document.createElement("p");
-      cont.appendChild(p);
-
-      let textoActual = texto[i];
-      let j = 0;
-
-      function escribirLetra() {
-        if (j < textoActual.length) {
-          p.innerHTML += textoActual.charAt(j);
-          j++;
-          setTimeout(escribirLetra, 25);
-        } else {
-          i++;
-          setTimeout(escribirParrafo, 400);
-        }
-      }
-
-      escribirLetra();
-    }
-  }
-
-  escribirParrafo();
+  texto.forEach(t => {
+    let p = document.createElement("p");
+    p.textContent = t;
+    cont.appendChild(p);
+  });
 }
 
-// LLUVIA 💖🎂
+// LLUVIA
 let lluviaActiva = false;
-
 function corazones() {
   if (lluviaActiva) return;
   lluviaActiva = true;
 
   setInterval(() => {
-    let elemento = document.createElement("div");
-    elemento.className = "heart";
-
-    elemento.innerHTML = Math.random() > 0.5 ? "💖" : "🎂";
-    elemento.style.left = Math.random() * 100 + "vw";
-    elemento.style.fontSize = (Math.random() * 15 + 15) + "px";
-
-    document.body.appendChild(elemento);
-
-    setTimeout(() => elemento.remove(), 4000);
+    let el = document.createElement("div");
+    el.className = "heart";
+    el.innerHTML = Math.random() > 0.5 ? "💖" : "🎂";
+    el.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
   }, 250);
 }
 
-// MENSAJE SECRETO
+// SECRETO
 function secreto() {
-  alert("Que nunca muera tu forma tan linda de ver la vida. Que siempre brilles más que el sol y que nunca se apague esa sonrisa. Nunca cambies 💛");
+  alert("Que nunca muera tu forma tan linda de ver la vida 💛");
 }
 </script>
 
