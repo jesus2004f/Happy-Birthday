@@ -1,75 +1,210 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Feliz Cumple 🎂</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti 💌</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: #fff;
-    }
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle, #1e1e2f, #0f0f1a);
+  color: white;
+}
 
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      padding: 30px;
-      border-radius: 20px;
-      max-width: 350px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      animation: fadeIn 2s ease;
-    }
+/* ESTRELLAS */
+.stars span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  animation: moveStars linear infinite;
+}
+@keyframes moveStars {
+  from { transform: translateY(0); }
+  to { transform: translateY(100vh); }
+}
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 15px;
-    }
+/* SOBRE */
+.envelope {
+  width: 260px;
+  height: 160px;
+  background: #ff4d6d;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  cursor: pointer;
+  animation: float 2s infinite ease-in-out;
+}
+.envelope::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  border-left: 130px solid transparent;
+  border-right: 130px solid transparent;
+  border-bottom: 80px solid #ff4d6d;
+  transition: 0.6s;
+}
+.open::before { transform: rotateX(180deg); }
 
-    p {
-      font-size: 16px;
-      line-height: 1.6;
-    }
+/* CARTA */
+.card {
+  position: absolute;
+  width: 320px;
+  max-height: 420px;
+  background: white;
+  color: #333;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  transform: scale(0);
+  transition: 0.5s;
+  overflow-y: auto;
+}
+.card.show { transform: scale(1); }
 
-    .heart {
-      font-size: 24px;
-      margin-top: 15px;
-      animation: beat 1s infinite;
-    }
+h1 { color: #ff4d6d; }
+#text { white-space: pre-line; }
 
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
+/* BOTÓN */
+button {
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  background: #ff4d6d;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
 
-    @keyframes beat {
-      0% {transform: scale(1);}
-      50% {transform: scale(1.2);}
-      100% {transform: scale(1);}
-    }
-  </style>
+/* CORAZONES */
+.heart {
+  position: absolute;
+  color: #ff4d6d;
+  animation: floatUp 4s linear infinite;
+}
+@keyframes floatUp {
+  from {transform: translateY(0);}
+  to {transform: translateY(-800px);}
+}
+
+@keyframes float {
+  0% {transform: translate(-50%, -50%);}
+  50% {transform: translate(-50%, -55%);}
+  100% {transform: translate(-50%, -50%);}
+}
+</style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>Feliz vuelta al sol 🌞</h1>
 
-    <p>
-      Hoy cierras un capítulo más y comienzas uno nuevo en tu vida.<br><br>
-      No importa la cantidad de años que cumplas, sino la calidad con la que vives cada momento.<br><br>
-      No apresures el tiempo, disfrútalo, porque cada día bien vivido se convierte en un recuerdo eterno.<br><br>
-      Mis mejores deseos para ti, espero que la estés pasando muy bien.<br><br>
-      Te mando un fuerte abrazo a la distancia, se te quiere mucho 💛
-    </p>
+<div class="stars" id="stars"></div>
 
-    <div class="heart">💖</div>
-  </div>
+<div class="envelope" onclick="openLetter()"></div>
+
+<div class="card" id="card">
+  <h1 id="title"></h1>
+  <p id="age"></p>
+  <p id="text"></p>
+
+  <button onclick="surprise()">💖 Presiona aquí</button>
+  <button onclick="secret()">👀 Mensaje secreto</button>
+</div>
+
+<audio id="music" src="music.mp3"></audio>
+
+<script>
+// ✏️ CONFIGURA
+const nombre = "PonSuNombre";
+const edad = 18;
+
+const mensaje = `Hoy cierras un capítulo más y comienzas uno nuevo en tu vida.
+
+No importa la cantidad de años que cumplas, sino la calidad con la que vives cada momento.
+
+No apresures el tiempo, disfrútalo, porque cada día bien vivido se convierte en un recuerdo eterno.
+
+Feliz vuelta al sol 🌞
+
+Mis mejores deseos para ti, espero que la estés pasando muy bien.
+
+Te mando un fuerte abrazo a la distancia, se te quiere mucho 💛`;
+
+const mensajeSecreto = "Gracias por existir 💛 nunca cambies";
+
+// 🌌 ESTRELLAS
+for (let i = 0; i < 120; i++) {
+  let star = document.createElement("span");
+  star.style.left = Math.random() * 100 + "%";
+  star.style.top = Math.random() * 100 + "%";
+  star.style.animationDuration = (Math.random() * 5 + 5) + "s";
+  document.getElementById("stars").appendChild(star);
+}
+
+// ✉️ ABRIR CARTA
+function openLetter() {
+  document.querySelector('.envelope').classList.add('open');
+  document.getElementById('card').classList.add('show');
+
+  document.getElementById("title").innerText = "Para ti 💌 " + nombre;
+  document.getElementById("age").innerText = "Hoy celebras tus " + edad + " años 🎂";
+
+  escribirTexto(mensaje);
+
+  // 🎶 Música
+  let audio = document.getElementById("music");
+  audio.play().catch(()=>{});
+
+  // 📳 Vibración
+  if (navigator.vibrate) navigator.vibrate([200,100,200]);
+
+  // 🔊 Voz
+  hablar("Feliz cumpleaños " + nombre);
+}
+
+// ⌨️ ESCRITURA
+function escribirTexto(texto) {
+  let i = 0;
+  let cont = document.getElementById("text");
+
+  function escribir() {
+    if (i < texto.length) {
+      cont.innerHTML += texto.charAt(i);
+      i++;
+      setTimeout(escribir, 30);
+    }
+  }
+  escribir();
+}
+
+// 🔊 VOZ
+function hablar(texto) {
+  let msg = new SpeechSynthesisUtterance(texto);
+  msg.lang = "es-ES";
+  speechSynthesis.speak(msg);
+}
+
+// 💖 SORPRESA
+function surprise() {
+  setInterval(() => {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }, 200);
+}
+
+// 👀 MENSAJE OCULTO
+function secret() {
+  alert(mensajeSecreto);
+}
+</script>
+
 </body>
 </html>
