@@ -1,76 +1,87 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> FELIZ VUELTA AL SOL 💌</title>
+<title>Para ti 💌</title>
 
 <style>
 body {
   margin: 0;
-  overflow: hidden;
   font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle, #1e1e2f, #0f0f1a);
-  color: white;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-/* ESTRELLAS */
-.stars span {
+/* TEXTO INICIAL */
+.hint {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: white;
-  animation: moveStars linear infinite;
-}
-@keyframes moveStars {
-  from { transform: translateY(0); }
-  to { transform: translateY(100vh); }
+  top: 20px;
+  color: white;
+  font-size: 14px;
+  opacity: 0.8;
 }
 
 /* SOBRE */
 .envelope {
-  width: 260px;
-  height: 160px;
-  background: #ff4d6d;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 140px;
+  background: #fff;
+  position: relative;
   border-radius: 8px;
   cursor: pointer;
-  animation: float 2s infinite ease-in-out;
 }
-.envelope::before {
+
+.envelope:before {
   content: "";
   position: absolute;
-  top: -80px;
-  border-left: 130px solid transparent;
-  border-right: 130px solid transparent;
-  border-bottom: 80px solid #ff4d6d;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 110px solid transparent;
+  border-right: 110px solid transparent;
+  border-top: 70px solid #ff4d6d;
+  transform-origin: top;
   transition: 0.6s;
 }
-.open::before { transform: rotateX(180deg); }
+
+.open:before {
+  transform: rotateX(180deg);
+}
 
 /* CARTA */
 .card {
   position: absolute;
-  width: 320px;
-  max-height: 420px;
+  width: 85%;
+  max-width: 350px;
   background: white;
-  color: #333;
   border-radius: 20px;
   padding: 20px;
   text-align: center;
   transform: scale(0);
-  transition: 0.5s;
-  overflow-y: auto;
+  transition: 0.4s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
-.card.show { transform: scale(1); }
 
-h1 { color: #ff4d6d; }
-#text { white-space: pre-line; }
+.card.show {
+  transform: scale(1);
+}
 
-/* BOTÓN */
+h1 {
+  color: #ff4d6d;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* BOTONES */
 button {
   margin-top: 10px;
   padding: 10px;
@@ -78,131 +89,99 @@ button {
   background: #ff4d6d;
   color: white;
   border-radius: 10px;
-  cursor: pointer;
+  width: 100%;
 }
 
 /* CORAZONES */
 .heart {
-  position: absolute;
-  color: #ff4d6d;
-  animation: floatUp 4s linear infinite;
-}
-@keyframes floatUp {
-  from {transform: translateY(0);}
-  to {transform: translateY(-800px);}
+  position: fixed;
+  bottom: 0;
+  font-size: 20px;
+  animation: subir 3s linear forwards;
 }
 
-@keyframes float {
-  0% {transform: translate(-50%, -50%);}
-  50% {transform: translate(-50%, -55%);}
-  100% {transform: translate(-50%, -50%);}
+@keyframes subir {
+  to {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="stars" id="stars"></div>
+<div class="hint">Toca el sobre 💌</div>
 
-<div class="envelope" onclick="openLetter()"></div>
+<div class="envelope" onclick="abrir()"></div>
 
 <div class="card" id="card">
-  <h1 id="title"></h1>
-  <p id="age"></p>
-  <p id="text"></p>
+  <h1>Feliz cumpleaños🎂</h1>
 
-  <button onclick="surprise()">💖 Presiona aquí</button>
-  <button onclick="secret()">👀 Mensaje secreto</button>
+  <p id="mensaje"></p>
+
+  <button onclick="corazones()">💖 Presiona aquí</button>
+  <button onclick="secreto()">👀 Mensaje secreto</button>
 </div>
 
 <audio id="music" src="music.mp3"></audio>
 
 <script>
-// ✏️ CONFIGURA
 const nombre = "Carmen";
-const edad = 18;
 
-const mensaje = `Hoy cierras un capítulo y comienzas uno nuevo en tu vida.
+const texto = `Hoy cierras un capítulo más y comienzas uno nuevo en tu vida.
 
-No importa la cantidad de años que cumplas, sino la calidad con la que vives cada momento.
+No importa la cantidad de años que cumplas, sino la calidad con la que vives.
 
-No apresures el tiempo, disfrútalo, porque cada día bien vivido se convierte en un recuerdo eterno.
+No apresures el tiempo, disfruta cada momento.
 
 Feliz vuelta al sol 🌞
 
-Mis mejores deseos para ti, espero que la estés pasando de lo mejor.
+Hoy celebras tus 18 años 🎂
 
-Te mando un fuerte abrazo a la distancia, se te quiere mucho 💛`;
+Te mando un fuerte abrazo a la distancia 💛`;
 
-const mensajeSecreto = "Gracias por existir 💛 nunca cambies";
+function abrir() {
+  document.querySelector(".envelope").classList.add("open");
+  document.getElementById("card").classList.add("show");
 
-// 🌌 ESTRELLAS
-for (let i = 0; i < 120; i++) {
-  let star = document.createElement("span");
-  star.style.left = Math.random() * 100 + "%";
-  star.style.top = Math.random() * 100 + "%";
-  star.style.animationDuration = (Math.random() * 5 + 5) + "s";
-  document.getElementById("stars").appendChild(star);
-}
+  escribir();
 
-// ✉️ ABRIR CARTA
-function openLetter() {
-  document.querySelector('.envelope').classList.add('open');
-  document.getElementById('card').classList.add('show');
-
-  document.getElementById("title").innerText = "Para ti 💌 " + Carmen;
-  document.getElementById("age").innerText = "Hoy celebras tus " + 18 + " años 🎂";
-
-  escribirTexto(mensaje);
-
-  // 🎶 Música
   let audio = document.getElementById("music");
-  audio.play().catch(()=>{});
+  audio.play();
 
-  // 📳 Vibración
-  if (navigator.vibrate) navigator.vibrate([200,100,200]);
-
-  // 🔊 Voz
-  hablar("Feliz cumpleaños " + nombre);
+  if (navigator.vibrate) navigator.vibrate(200);
 }
 
-// ⌨️ ESCRITURA
-function escribirTexto(texto) {
+function escribir() {
   let i = 0;
-  let cont = document.getElementById("text");
+  let speed = 30;
+  let cont = document.getElementById("mensaje");
 
-  function escribir() {
+  function write() {
     if (i < texto.length) {
       cont.innerHTML += texto.charAt(i);
       i++;
-      setTimeout(escribir, 30);
+      setTimeout(write, speed);
     }
   }
-  escribir();
+  write();
 }
 
-// 🔊 VOZ
-function hablar(texto) {
-  let msg = new SpeechSynthesisUtterance(texto);
-  msg.lang = "es-ES";
-  speechSynthesis.speak(msg);
-}
-
-// 💖 SORPRESA
-function surprise() {
-  setInterval(() => {
+function corazones() {
+  for (let i = 0; i < 20; i++) {
     let heart = document.createElement("div");
     heart.className = "heart";
     heart.innerHTML = "💖";
-    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.left = Math.random() * 100 + "vw";
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 4000);
-  }, 200);
+
+    setTimeout(() => heart.remove(), 3000);
+  }
 }
 
-// 👀 MENSAJE OCULTO
-function secret() {
-  alert(mensajeSecreto);
+function secreto() {
+  alert("Eres una persona muy especial 💛 nunca olvides eso");
 }
 </script>
 
